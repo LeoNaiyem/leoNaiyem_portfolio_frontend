@@ -1,31 +1,18 @@
 import { motion } from "framer-motion";
-import React from "react";
-import { images } from '../../constants';
+import React, { useEffect, useState } from "react";
+import { client } from "../../client";
 import "./About.scss";
 
-const abouts = [
-  {
-    title: "Web Developer",
-    description: "I am a good web developer",
-    imgUrl: images.about01,
-  },
-  {
-    title: "Web Designer",
-    description: "I am a good web developer",
-    imgUrl: images.about02,
-  },
-  {
-    title: "Web Developer",
-    description: "I am a good web developer",
-    imgUrl: images.about03,
-  },
-  {
-    title: "Web Developer",
-    description: "I am a good web developer",
-    imgUrl: images.about04,
-  },
-];
+
 const About = () => {
+    const [abouts, setAbouts] = useState([]);
+
+    useEffect(() => {
+      const query = '*[_type == "abouts"]';
+      client.fetch(query)
+      .then((data)=> setAbouts(data))
+    }, [])
+    
   return (
     <>
       <h1 className="head-text">
