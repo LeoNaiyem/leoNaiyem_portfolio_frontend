@@ -1,9 +1,100 @@
-import React from 'react';
-import './Work.scss';
-const Work = () => {
-  return (
-    <div>Work</div>
-  )
-}
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { AiFillEye, AiFillGithub } from "react-icons/ai";
 
-export default Work
+import { client, urlFor } from "../../client";
+import { AppWrap } from "../../wrapper";
+import "./Work.scss";
+
+const filterItems = ["React Js", "Vanilla Js", "Web App", "MERN", "All"];
+const Work = () => {
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 });
+  const [work, setWork] = useState([]);
+  const [filterWork, setFilterWork] = useState([]);
+
+  useEffect(() => {
+    const query = '*[_type == "works"]';
+
+    client.fetch(query).then((data) => {
+      console.log(data);
+      setWork(data);
+      setFilterWork(data);
+    });
+  }, []);
+
+  const handleFilter = (item) => {
+    console.log(item);
+  };
+  return (
+    <>
+      <h2 className="head-text">
+        My Creative <span>Portfolio</span>
+      </h2>
+
+      <div className="app__work-filter">
+        {filterItems.map((item, index) => (
+          <div
+            className={`app__work-filter-item p-text app__flex ${
+              activeFilter === item ? "item-active" : ""
+            }`}
+            key={index}
+            onClick={() => handleFilter(item)}
+          >
+            {item}
+          </div>
+        ))}
+      </div>
+      <motion.div
+        animate={animateCard}
+        transition={{ duration: 0.5, delayChildren: 0.5 }}
+        className="app__work-portfolio"
+      >
+        {filterWork.map((item, index) => (
+          <div className="app__work-item app__fex" key={index}>
+            <div className="app__work-img app__flex">
+              <img src={urlFor(item.imgUrl)} alt={item.name} />
+
+              <motion.div
+              whileHover={{opacity:[0,1]}}
+              transition={{duration:0.25, ease:'easeInOut', staggerChildren: 0.5 }}
+              className="app__work-hover app__flex"
+              >
+                <a href={item.projectLink} target="_blank" rel="noopener noreferrer">
+                  <motion.div
+                  whileInView={{scale:[0, 1]}}
+                  whileHover={{opacity:[1,0.9]}}
+                  transition={{duration:0.25 }}
+                  className="app__flex"
+                  >
+                    <AiFillEye/>
+                  </motion.div>
+                </a>
+                <a href={item.codeLink} target="_blank" rel="noopener noreferrer">
+                  <motion.div
+                  whileInView={{scale:[0, 1]}}
+                  whileHover={{opacity:[1,0.9]}}
+                  transition={{duration:0.25 }}
+                  className="app__flex"
+                  >
+                    <AiFillGithub/>
+                  </motion.div>
+                </a>
+              </motion.div>
+            </div>
+            <div className="app__work-content app__flex">
+              <h4 className="bold-text">{item.title}</h4>
+              <p className="p-text" style={{marginTop:10}}>{item.description}</p>
+
+              <div className="app__work-tag app__fex">
+                <p className="p-text">{item.tags[0]}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </motion.div>
+    </>
+  );
+};
+
+export default AppWrap(Work, "work");
