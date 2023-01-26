@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { AiFillEye, AiFillGithub } from "react-icons/ai";
 
 import { client, urlFor } from "../../client";
-import { AppWrap } from "../../wrapper";
+import { AppWrap, MotionWrap } from "../../wrapper";
 import "./Work.scss";
 
 const filterItems = ["React Js", "Html/Css", "Web App", "MERN", "All"];
@@ -17,7 +17,6 @@ const Work = () => {
     const query = '*[_type == "works"]';
 
     client.fetch(query).then((data) => {
-      console.log(data);
       setWorks(data);
       setFilterWork(data);
     });
@@ -121,4 +120,8 @@ const Work = () => {
   );
 };
 
-export default AppWrap(Work, "work");
+export default AppWrap(
+  MotionWrap(Work, "app__works"),
+  "work",
+  "app__primarybg"
+);
