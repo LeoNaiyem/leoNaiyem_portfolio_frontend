@@ -5,7 +5,7 @@ const navLinkItems = [
   "about",
   "work",
   "skills",
-  "testimonials",
+  "testimonial",
   "contact",
 ];
 const NavigationDots = ({ active }) => {

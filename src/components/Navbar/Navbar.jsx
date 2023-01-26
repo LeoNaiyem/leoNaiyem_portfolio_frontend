@@ -4,7 +4,7 @@ import { HiMenuAlt4, HiX } from "react-icons/hi";
 import { images } from "../../constants";
 import "./Navbar.scss";
 
-const navLinkItems = ["home", "about", "work", "skills", "testimonials", "contact"];
+const navLinkItems = ["home", "about", "work", "skills", "testimonial", "contact"];
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   return (
