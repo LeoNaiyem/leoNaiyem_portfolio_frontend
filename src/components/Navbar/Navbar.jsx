@@ -3,18 +3,27 @@ import React, { useState } from "react";
 import { HiMenuAlt4, HiX } from "react-icons/hi";
 import { images } from "../../constants";
 import "./Navbar.scss";
-const navLinkItems = ["home", "about", "work", "skills", "testimonial", "contact"];
+const navLinkItems = [
+  "home",
+  "about",
+  "work",
+  "skills",
+  "testimonial",
+  "contact",
+];
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   return (
     <nav className="app__navbar">
       <div className="app__navbar-logo">
-        <img src={images.logo} alt="logo" />
+        <a href="#home">
+          <img src={images.logo} alt="logo" />
+        </a>
       </div>
       <ul className="app__navbar-links">
         {navLinkItems.map((item) => (
           <li className="app__flex p-text" key={`link-${item}`}>
-            <div/>
+            <div />
             <a href={`#${item}`}>{item}</a>
           </li>
         ))}

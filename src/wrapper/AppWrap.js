@@ -13,7 +13,9 @@ const AppWrap = (Component, idName, classNames) =>
           <Component />
 
           <div className="copyright">
-            <p className="p-text">@{year} Naiyem</p>
+            <p className="p-text">
+              ©{year} <span style={{ color: "#ec3600" }}>Naiyem</span>
+            </p>
             <p className="p-text">All rights reserved</p>
           </div>
         </div>
