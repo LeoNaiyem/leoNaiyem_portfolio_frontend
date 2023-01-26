@@ -6,7 +6,7 @@ import { client, urlFor } from "../../client";
 import { AppWrap, MotionWrap } from "../../wrapper";
 import "./Work.scss";
 
-const filterItems = ["React Js", "Html/Css", "Web App", "MERN", "All"];
+const filterItems = ["All", "React Js", "Web App", "MERN", "Html/Css", "Vanilla JS"];
 const Work = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 });
@@ -123,5 +123,5 @@ const Work = () => {
 export default AppWrap(
   MotionWrap(Work, "app__works"),
   "work",
-  "app__primarybg"
+  "app__primaryBg"
 );

@@ -60,7 +60,6 @@ const Skills = () => {
                       transition={{ duration: 0.5 }}
                       className="app__skills-exp-work"
                       id={work.name}
-                      
                     >
                       <h4 className="bold-text">{work.name}</h4>
                       <p className="p-text">{work.company}</p>
@@ -85,5 +84,5 @@ const Skills = () => {
 export default AppWrap(
   MotionWrap(Skills, "app__skills"),
   "skills",
-  "app__whitebg"
+  "app__whiteBg"
 );
