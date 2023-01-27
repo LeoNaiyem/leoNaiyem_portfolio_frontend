@@ -35,6 +35,7 @@ import bolt from '../assets/bolt.png';
 import nb from '../assets/nb.png';
 import skype from '../assets/skype.png';
 import spotify from '../assets/spotify.png';
+import wave from '../assets/waving_hand.png';
 
 const images = {
   email,
@@ -57,6 +58,7 @@ const images = {
   typescript,
   vue,
   mongodb,
+  wave,
   about01,
   about02,
   about03,
