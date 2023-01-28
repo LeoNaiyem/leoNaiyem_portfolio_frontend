@@ -24,7 +24,7 @@ const Header = () => (
     >
       <div className="app__header-badge">
         <div className="badge-cmp app__flex">
-          <img class="wave" src={images.wave} alt="wave icon" />
+          <img className="wave" src={images.wave} alt="wave icon" />
           <div style={{ marginLeft: 20 }}>
             <p className="p-text">Hello, I am</p>
             <h1 className="head-text name-text">Naiyem</h1>

@@ -19,10 +19,10 @@ const About = () => {
   return (
     <>
       <h1 className="head-text">
-        I Know that
-        <span> Good Apps</span> <br />
-        means
-        <span> Good Business</span>
+        I Know that good
+        <span className="name-text"> Apps</span> <br />
+        means good
+        <span className="name-text"> Business</span>
       </h1>
       <div className="app__profiles">
         {aboutItems.map((about, index) => (

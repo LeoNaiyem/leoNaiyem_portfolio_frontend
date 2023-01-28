@@ -13,36 +13,43 @@ const Footer = () => {
   });
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState(false);
 
   const { username, email, message } = formData;
 
   const handleChangeInput = (e) => {
+    setFormError(false);
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = () => {
-    setLoading(true);
+    if (username && email && message) {
+      setFormError(false);
+      setLoading(true);
 
-    const contact = {
-      _type: "contact",
-      name: formData.username,
-      email: formData.email,
-      message: formData.message,
-    };
+      const contact = {
+        _type: "contact",
+        name: formData.username,
+        email: formData.email,
+        message: formData.message,
+      };
 
-    client
-      .create(contact)
-      .then(() => {
-        setLoading(false);
-        setIsFormSubmitted(true);
-      })
-      .catch((err) => console.log(err));
+      client
+        .create(contact)
+        .then(() => {
+          setLoading(false);
+          setIsFormSubmitted(true);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setFormError(true);
+    }
   };
 
   return (
     <>
-      <h2 className="head-text">Take a coffee & chat with me</h2>
+      <h2 className="head-text">Take a <span className="name-text">coffee & chat</span> with me</h2>
 
       <div className="app__footer-cards">
         <div className="app__footer-card ">
@@ -94,10 +101,17 @@ const Footer = () => {
           <button type="button" className="p-text" onClick={handleSubmit}>
             {!loading ? "Send Message" : "Sending..."}
           </button>
+          {formError && (
+            <p>
+              <small style={{ color: "red", fontWeight: 300 }}>
+                Pease! Fill out the form properly.
+              </small>
+            </p>
+          )}
         </div>
       ) : (
         <div>
-          <h3 className="head-text">Thank you for getting in touch!</h3>
+          <h2 style={{color:"#ec3600"}}>Thank you for getting in touch!</h2>
         </div>
       )}
     </>
