@@ -165,6 +165,9 @@
     @media screen and (min-width: 900px) {
       display: none;
     }
+    @media screen and (max-width: 365px) {
+      width: 100%;
+    }
   }
 
   @media screen and (min-width: 900px) {
