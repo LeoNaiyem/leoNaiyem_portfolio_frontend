@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { HiMenuAlt4, HiX } from "react-icons/hi";
 
+import Resume from "../../assets/Resume.pdf";
 import { images } from "../../constants";
 import "./Navbar.scss";
 
@@ -31,7 +32,9 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
-
+      <a href={Resume} download>
+        <button type="button">Download CV</button>
+      </a>
       <div className="app__navbar-menu">
         <HiMenuAlt4 onClick={() => setToggle(true)} />
 

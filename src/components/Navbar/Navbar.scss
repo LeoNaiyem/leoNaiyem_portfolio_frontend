@@ -83,7 +83,22 @@
     display: none;
   }
 }
+button {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background-color: var(--secondary-color);
+  font-weight: 500;
+  color: var(--white-color);
+  outline: none;
+  font-family: var(--font-base);
+  transition: all 0.5 cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  cursor: pointer;
 
+  &:hover {
+    background-color: #c42f02;
+  }
+}
 .app__navbar-menu {
   width: 35px;
   height: 35px;
