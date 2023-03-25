@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import { BsFillArrowDownCircleFill } from "react-icons/bs";
 import { HiMenuAlt4, HiX } from "react-icons/hi";
 
 import Resume from "../../assets/Resume.pdf";
@@ -33,7 +34,10 @@ const Navbar = () => {
         ))}
       </ul>
       <a href={Resume} download>
-        <button type="button">Download CV</button>
+        <button type="button">
+          <BsFillArrowDownCircleFill />
+          Resume
+        </button>
       </a>
       <div className="app__navbar-menu">
         <HiMenuAlt4 onClick={() => setToggle(true)} />
