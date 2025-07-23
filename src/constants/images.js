@@ -17,6 +17,8 @@ import react from '../assets/react.png';
 import redux from '../assets/redux.png';
 import sass from '../assets/sass.png';
 import typescript from '../assets/typescript.png';
+import laravel from '../assets/laravel.png';
+import tailwind from '../assets/tailwind.png';
 import vue from '../assets/vue.png';
 
 import about01 from '../assets/about01.png';
@@ -56,6 +58,8 @@ const images = {
   redux,
   sass,
   typescript,
+  laravel,
+  tailwind,
   vue,
   mongodb,
   wave,
