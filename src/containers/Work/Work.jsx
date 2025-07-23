@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillEye, AiFillGithub } from "react-icons/ai";
 
 import { client, urlFor } from "../../client";
 import { AppWrap, MotionWrap } from "../../wrapper";
 import "./Work.scss";
 
-const filterItems = ["All", "React Js", "Web App", "MERN", "Html/Css", "Vanilla JS"];
+const filterItems = ["ALL", "REACT JS", "PHP/LARAVEL", "MERN", "HTML/CSS", "VANILLA JS"];
 const Work = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 });
