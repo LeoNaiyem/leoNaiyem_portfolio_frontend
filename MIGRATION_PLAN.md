@@ -15,8 +15,8 @@ There are two separate repositories:
 
 | Repo | Contents | Hosting |
 |---|---|---|
-| `leoNaiyem_portfolio_frontend` (this repo) | Next.js app | Vercel |
-| `leoNaiyem_portfolio_api` (new) | Laravel 13 API + Filament admin | Laravel Cloud / Forge / VPS |
+| `leoNaiyem_portfolio_frontend` (this repo) | Next.js app | Vercel (old CRA site: Render) |
+| `leoNaiyem_portfolio_api` (new) | Laravel 13 API + Filament admin | Not decided yet |
 
 The only contract between them is the REST API (`/api/v1`) plus a revalidation webhook.
 
@@ -172,12 +172,29 @@ src/
 
 ## Phase 3: Deployment (about 1 day)
 
-- [ ] **Backend:** deploy Laravel, provision MySQL 8, run migrations and the import, start the queue worker and scheduler, configure mail.
-- [ ] **Frontend:** connect this repo to Vercel and set the environment variables.
-- [ ] Test the revalidate webhook end to end (edit in Filament, check the live site).
-- [ ] Point the domain to Vercel and add an `api.` subdomain for Laravel.
-- [ ] Submit the sitemap to Google Search Console.
-- [ ] Shut down the Sanity project.
+Decided (2026-10-30): frontend on **Vercel** (Hobby). There is no custom domain; the old site is `leonaiyem.onrender.com` (Render, auto-deploys `main`). The API host is not decided yet.
+
+Why not Render for the new frontend: Render's disk is ephemeral and free instances sleep after ~15 idle minutes. Each wake-up would drop the pages refreshed by `/api/revalidate`, so admin edits would revert to build-time content.
+
+**Do not merge `next-migration` into `main` while Render is still connected.** Render would try to deploy the Next app with the old CRA settings and break the live site.
+
+Order matters: the frontend build fetches from the API, so the API goes first.
+
+1. [ ] **Backend:** deploy Laravel, provision MySQL 8, run migrations and the import, start the queue worker and scheduler, and configure mail.
+   - Production `.env`: `APP_NAME`, `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, `ADMIN_EMAIL`, `MAIL_*`, `TURNSTILE_SECRET_KEY`, `REVALIDATE_SECRET` (a new random value), and `MEDIA_DISK` (`s3` if the host's disk is ephemeral).
+   - Set `FRONTEND_URL` once the Vercel URL is known (step 2).
+2. [ ] **Frontend:** import the GitHub repo in Vercel with the production branch set to `next-migration` for now. Framework, build and output settings are auto-detected. Environment variables:
+   - `API_URL` and `NEXT_PUBLIC_API_URL`: the public API URL.
+   - `MEDIA_URL`: only when the API uses S3/R2.
+   - `REVALIDATE_SECRET`: the same value as the API.
+   - `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
+   - `NEXT_PUBLIC_SITE_URL`: the `https://<project>.vercel.app` URL.
+3. [ ] Set the API's `FRONTEND_URL` to the Vercel URL (CORS + revalidation target).
+4. [ ] Test on the live site: the contact form (with Turnstile and real mail), then an edit in Filament showing up on the site (revalidate webhook).
+5. [ ] Merge `next-migration` into `main` and switch Vercel's production branch to `main`. Before merging, disconnect or suspend the Render service so it doesn't deploy the Next app.
+6. [ ] Retire `leonaiyem.onrender.com`: add a Render redirect rule (`/*` → the Vercel URL, 301) so old links and search results carry over, then shut it down later.
+7. [ ] Submit the sitemap to Google Search Console (the vercel.app URL; a custom domain would be easier to keep long term).
+8. [ ] Shut down the Sanity project.
 
 ## Open decisions
 
