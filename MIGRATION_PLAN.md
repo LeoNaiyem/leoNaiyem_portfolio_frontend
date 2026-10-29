@@ -155,7 +155,11 @@ src/
 - [x] `sitemap.ts` (home + every project) and `robots.ts`.
 - [x] JSON-LD `Person` schema on home and `CreativeWork` on project pages.
 - [x] Semantic headings (one `h1` per page) and alt text everywhere.
-- [ ] **(You)** Lighthouse: aim for 90+ in every category (run against the real API after the import).
+- [ ] Lighthouse: aim for 90+ in every category. Local run with mock data (2026-10-29):
+  - Home: mobile perf ~88 (83–90), desktop 99. Project page: mobile 95, desktop 100. SEO 100 everywhere.
+  - Accessibility 96: brand orange `#ec3600` on white is 4.12:1 contrast, and small text needs 4.5:1 (Resume button, copyright name, active filter). Needs a design decision.
+  - Best Practices 96 on home: `react.png` is 64×64 but displayed at 90px. Needs a larger asset.
+  - **(You)** Re-run on the deployed site (CDN/HTTP2 change the mobile numbers).
 
 ## Phase 3: Deployment (about 1 day)
 
