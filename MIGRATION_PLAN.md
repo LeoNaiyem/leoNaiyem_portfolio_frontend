@@ -41,7 +41,7 @@ The only contract between them is the REST API (`/api/v1`) plus a revalidation w
 - [x] `git rm --cached .env` and add `.env*` to `.gitignore`.
 - [x] ~~Export content with the Sanity CLI~~. No longer needed: `php artisan import:sanity` reads the live dataset over HTTP.
 - [x] Create the API project at `F:\WebDevelopment\Projects\leoNaiyem_portfolio_api` (git initialized, nothing committed yet).
-- [ ] **(You)** Create the GitHub repo for the API and push.
+- [x] **(You)** Create the GitHub repo for the API and push (`LeoNaiyem/LeoNaiyem-portfolio-api`).
 
 ## Phase 1: Laravel 13 backend ✅ done
 
@@ -160,6 +160,15 @@ src/
   - Accessibility 96: brand orange `#ec3600` on white is 4.12:1 contrast, and small text needs 4.5:1 (Resume button, copyright name, active filter). Needs a design decision.
   - Best Practices 96 on home: `react.png` is 64×64 but displayed at 90px. Needs a larger asset.
   - **(You)** Re-run on the deployed site (CDN/HTTP2 change the mobile numbers).
+
+### Verified end to end (2026-10-30)
+- Contact form in Chrome against the real API (on a copy of the dev database):
+  - The browser check blocks empty fields, and the API rejects short messages and a filled honeypot (422, error shown to the visitor).
+  - A valid message returns 201: it is stored, and the queued admin email has the right To, Reply-To, body and admin link.
+  - CORS allows only the site's origin, including on 429 responses, so the rate-limit message reaches the visitor.
+  - Turnstile and real mail delivery still need production keys.
+- Visual check of every section at desktop and phone width, with content (mock) and without (real, empty API). No horizontal overflow.
+- Production `.env` for the API: set `APP_NAME` (emails are currently branded "Laravel") and `ADMIN_EMAIL` (unset means no notification is sent).
 
 ## Phase 3: Deployment (about 1 day)
 
