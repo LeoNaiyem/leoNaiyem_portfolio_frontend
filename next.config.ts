@@ -14,13 +14,18 @@ const remotePatterns: RemotePattern[] = imageOrigins.map((url) => ({
   pathname: "/**",
 }));
 
+// A local API (dev, or `next start` against it) needs the optimizer to fetch from a
+// private IP. A deployed site points at public hosts, so this stays off there.
+const usesLocalApi = imageOrigins.some(({ hostname }) =>
+  ["localhost", "127.0.0.1", "[::1]"].includes(hostname),
+);
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   images: {
     remotePatterns,
-    // Lets the optimizer fetch from the API on localhost during development.
-    dangerouslyAllowLocalIP: process.env.NODE_ENV !== "production",
+    dangerouslyAllowLocalIP: usesLocalApi,
   },
 };
 

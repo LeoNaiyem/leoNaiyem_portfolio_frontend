@@ -19,7 +19,7 @@ export default function Navbar({ resumeUrl }: { resumeUrl: string }) {
     <nav className={styles.navbar}>
       <div className={styles.logo}>
         <Link href="/#home" aria-label="Home">
-          <Image src={logo} alt="Naiyem logo" priority />
+          <Image src={logo} alt="Naiyem logo" priority sizes="(min-width: 2000px) 180px, 100px" />
         </Link>
       </div>
       <ul className={styles.links}>

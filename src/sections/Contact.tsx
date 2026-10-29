@@ -21,13 +21,13 @@ export default async function Contact() {
 
       <div className={styles.cards}>
         <div className={styles.card}>
-          <Image src={emailIcon} alt="" />
+          <Image src={emailIcon} alt="" sizes="40px" />
           <a href={`mailto:${email}`} className="p-text">
             {email}
           </a>
         </div>
         <div className={styles.card}>
-          <Image src={mobileIcon} alt="" />
+          <Image src={mobileIcon} alt="" sizes="40px" />
           <a href={PHONE.href} className="p-text">
             {PHONE.label}
           </a>
