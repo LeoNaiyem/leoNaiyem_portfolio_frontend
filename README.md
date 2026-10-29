@@ -1,71 +1,60 @@
-# Getting Started with Create React App
+# Leo Naiyem Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Next.js frontend for the portfolio site. Content comes from the Laravel API in
+`leoNaiyem_portfolio_api`. Every page is prerendered and only rebuilt when content
+changes in the admin panel.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+- Node.js 20.9+
+- The API running locally (see the API repo's README)
 
-### `npm start`
+## Local setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm install
+cp .env.example .env.local   # point API_URL / NEXT_PUBLIC_API_URL at your API
+npm run dev                  # http://localhost:3000
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+`npm run build` fetches all content from the API, so the API must be reachable
+during the build. The build fails if the API is down. This is deliberate: an empty
+site never gets deployed.
 
-### `npm test`
+## Environment
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Variable | Purpose |
+|---|---|
+| `API_URL` | API base URL for server-side fetches |
+| `NEXT_PUBLIC_API_URL` | API base URL the browser posts the contact form to |
+| `MEDIA_URL` | Optional image origin when the API stores media on S3 / R2 |
+| `REVALIDATE_SECRET` | Must match `REVALIDATE_SECRET` in the API |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key; empty hides the widget |
+| `NEXT_PUBLIC_SITE_URL` | Public site URL (canonical links, sitemap, Open Graph) |
 
-### `npm run build`
+Image hosts for `next/image` are derived from `API_URL` and `MEDIA_URL` in
+`next.config.ts`. In development, images from `localhost` are allowed. In
+production, the API must be on a public host.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## How content stays fresh
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- `src/lib/api.ts` wraps each endpoint in `'use cache'` with a cache tag named after
+  its table (`settings`, `projects`, `skills`, ...).
+- When content is saved in the admin, Laravel calls `POST /api/revalidate` with the
+  `x-revalidate-secret` header and `{ "tag": "<table>" }`. That expires the tag, and
+  the next visit renders fresh content.
+- `ensureStatic = "navigation"` in the root layout keeps every page fully static. The
+  build fails if a change would add per-request rendering.
+- Projects published after a deploy are rendered fully on their first visit and then
+  cached. Unknown slugs return a real 404.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Structure
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# leoNaiyem_portfolio_frontend
+```
+src/
+  app/            routes, metadata, sitemap, robots, OG image, revalidate webhook
+  components/     Navbar, Section layout, social links, navigation dots, JSON-LD
+  sections/       home page sections; *Grid / *Slider / *Form / *Tooltip are client islands
+  lib/api.ts      typed, cached API helpers
+  types/api.ts    API response types
+```
